@@ -1,0 +1,21 @@
+# Local Claude tooling + task files (never committed)
+CLAUDE.md
+.claude/
+docs/
+
+# Secrets: never in the repo (client-side Firebase config only)
+*service-account*.json
+*serviceAccount*.json
+*-adminsdk-*.json
+
+# Flutter / Dart
+.dart_tool/
+build/
+.flutter-plugins*
+.packages
+.pub-cache/
+.pub/
+*.iml
+.idea/
+local.properties
+*.apk
