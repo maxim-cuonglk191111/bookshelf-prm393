@@ -89,7 +89,10 @@ class _FiltersState extends State<_Filters> {
   Widget build(BuildContext context) {
     final c = widget.controller;
     final f = c.filters;
-    if (f.query.isEmpty && _search.text.isNotEmpty) _search.clear(); // reset by Clear / account switch
+    if (f.query.isEmpty && _search.text.isNotEmpty) {
+      // reset by Clear / account switch (outside the build pass)
+      WidgetsBinding.instance.addPostFrameCallback((_) => _search.clear());
+    }
     return AppCard(
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
