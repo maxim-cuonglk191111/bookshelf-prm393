@@ -85,8 +85,13 @@ class BooksController extends ChangeNotifier {
     }
   }
 
-  static String _message(Object e) =>
-      e is FirebaseException ? (e.message ?? e.code) : e.toString();
+  /// Firestore's own message. On web the exception arrives wrapped in a string such as
+  /// "Dart exception: [cloud_firestore/permission-denied] Missing or insufficient permissions."
+  static String _message(Object e) {
+    if (e is FirebaseException) return e.message ?? e.code;
+    final m = RegExp(r'\[[\w-]+/[\w-]+\]\s*(.*)').firstMatch(e.toString());
+    return m?.group(1) ?? e.toString();
+  }
 
   @override
   void dispose() {

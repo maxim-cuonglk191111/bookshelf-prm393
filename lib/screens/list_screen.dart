@@ -35,7 +35,7 @@ class ListScreen extends StatelessWidget {
               initiallyExpanded: true,
               maintainState: true,
               tilePadding: const EdgeInsets.symmetric(horizontal: Gap.md),
-              childrenPadding: const EdgeInsets.fromLTRB(Gap.md, 0, Gap.md, Gap.md),
+              childrenPadding: const EdgeInsets.fromLTRB(Gap.md, Gap.sm, Gap.md, Gap.md),
               title: Text('Add a book', style: Theme.of(context).textTheme.titleMedium),
               children: [
                 BookForm(

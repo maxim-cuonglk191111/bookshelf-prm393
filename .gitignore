@@ -20,3 +20,4 @@ build/
 local.properties
 *.apk
 friction-log.md
+web/

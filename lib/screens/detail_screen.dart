@@ -21,6 +21,7 @@ class _DetailScreenState extends State<DetailScreen> {
   Book? _last; // keeps the screen steady while a rename swaps the document id
   var _editing = false;
   var _leaving = false; // deleting: do not react to the book disappearing
+  var _awaitingId = false; // saved under a new id that the live stream has not delivered yet
 
   Future<String?> _save(BooksController c, BookInput input) async {
     final old = _id;
@@ -31,7 +32,10 @@ class _DetailScreenState extends State<DetailScreen> {
     if (err != null) {
       setState(() => _id = old);
     } else {
-      setState(() => _editing = false);
+      setState(() {
+        _editing = false;
+        _awaitingId = _id != old;
+      });
     }
     return err;
   }
@@ -67,7 +71,9 @@ class _DetailScreenState extends State<DetailScreen> {
   @override
   Widget build(BuildContext context) {
     final c = context.watch<BooksController>();
-    final book = c.byId(_id) ?? (_editing || _leaving ? _last : null);
+    final found = c.byId(_id);
+    if (found != null) _awaitingId = false;
+    final book = found ?? (_editing || _leaving || _awaitingId ? _last : null);
     if (book == null) {
       // The book is gone (e.g. deleted elsewhere): go back to the list.
       WidgetsBinding.instance.addPostFrameCallback((_) {

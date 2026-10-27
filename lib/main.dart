@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'data/books_controller.dart';
+import 'firebase_options.dart';
 import 'screens/home_screen.dart';
 import 'screens/list_screen.dart';
 import 'ui/messenger.dart';
@@ -14,7 +16,8 @@ import 'ui/widgets.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(); // client config comes from google-services.json
+  // Android: client config from google-services.json; web: firebase_options.dart.
+  await Firebase.initializeApp(options: kIsWeb ? webFirebaseOptions : null);
   runApp(const BookShelfApp());
 }
 

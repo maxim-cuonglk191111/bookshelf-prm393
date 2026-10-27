@@ -33,7 +33,14 @@ service cloud.firestore {
     }
 
     match /books/{bookId} {
-      allow read: if request.auth != null && resource.data.userId == request.auth.uid;
+      // A get of a document that does not exist yet (the duplicate check when a book is
+      // renamed) is only allowed for ids that start with the caller's own uid.
+      allow get: if request.auth != null
+        && (resource == null
+            ? bookId.split('\\|')[0] == request.auth.uid
+            : resource.data.userId == request.auth.uid);
+
+      allow list: if request.auth != null && resource.data.userId == request.auth.uid;
 
       allow create: if request.auth != null && validBook(request.resource.data, bookId);
 
